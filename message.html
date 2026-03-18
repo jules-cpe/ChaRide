@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Driver-Passenger Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e9322; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 400px;
+      height: 600px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background:  #f0cb11;
+      color:#0e9322;
+      padding: 20px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #e6f7ef;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      word-wrap: break-word;
+    }
+
+    .driver {
+      align-self: flex-end;
+      background: #0e9322;
+      color: white;
+      border-bottom-right-radius: 0;
+    }
+
+    .passenger {
+      align-self: flex-start;
+      background: #ffffff;
+      border: 1px solid #0e9322;
+      color: #0e9322;
+      border-bottom-left-radius: 0;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      background: #f1fdf8;
+      border-top: 1px solid #ccc;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      background: #0e9322;
+      color:  #f0cb11;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .chat-input button:hover {
+      background:#0e9322;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      Driver ↔ Passenger
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+    
+    </div>
+
+    <div class="chat-input">
+      <input type="text" id="messageInput" placeholder="Type a message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatMessages = document.getElementById('chatMessages');
+    const messageInput = document.getElementById('messageInput');
+
+    function sendMessage() {
+      const text = messageInput.value.trim();
+      if (!text) return;
+
+      const driverMsg = document.createElement('div');
+      driverMsg.classList.add('message', 'driver');
+      driverMsg.textContent = text;
+      chatMessages.appendChild(driverMsg);
+
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      messageInput.value = '';
+
+      setTimeout(() => {
+        const passengerMsg = document.createElement('div');
+        passengerMsg.classList.add('message', 'passenger');
+        passengerMsg.textContent = "Passenger received: " + text;
+        chatMessages.appendChild(passengerMsg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }, 1000);
+    }
+
+    messageInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+
+</body>
+</html>

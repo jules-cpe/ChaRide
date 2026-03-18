@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Charide – Driver Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="driver-profile.css">
+  <style>
+    /* Sidebar layout adjustments */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      justify-content: space-between; /* Pushes logout to bottom */
+      padding: 20px;
+      background-color: #0aa812;
+      color: #fff;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar-logo img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .sidebar-links a {
+      display: block;
+      padding: 10px 0;
+      color: #ecf0f1;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .sidebar-links a.active {
+      font-weight: 700;
+    }
+
+    .sidebar-links a:hover {
+      color: #1abc9c;
+    }
+
+    /* Logout button at the bottom */
+    .sidebar-logout {
+      margin-top: auto;
+      color: #ffffff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .sidebar-logout:hover {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="sidebar-logo">
+        <img src="logo.png" alt="logo">
+        <span>Charide</span>
+      </div>
+      <nav class="sidebar-links">
+        <a>Dashboard</a>
+        <a class="active">Profile</a>
+        <a>Bookings</a>
+        <a>Support</a>
+        <a>About Us</a>
+      </nav>
+    </div>
+    <!-- Logout at bottom -->
+    <div id="logoutBtn" class="sidebar-logout">Logout</div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <div class="profile-header-full">
+      <div class="avatar" id="avatar">JD</div>
+      <div class="driver-info-full">
+        <h1 id="fullName">John Driver</h1>
+        <p id="organization">ESSU Campus Transportation System</p>
+      </div>
+    </div>
+
+    <div class="profile-grid" id="profileGrid">
+      <!-- Profile items will be injected here -->
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+  // Driver data
+  const driver = {
+    firstName: "John",
+    lastName: "Driver",
+    username: "johndriver",
+    dob: "1990-01-01",
+    gender: "Male",
+    address: "123 Campus Road, ESSU",
+    mobile: "+63 900 000 0000",
+    licenseNumber: "XYZ-12345",
+    licenseExpiry: "2026-12-31",
+    vehicleType: "Tricycle",
+    plateNumber: "ABC-1234",
+    experience: 5,
+    emergencyContact: "+63 912 345 6789"
+  };
+
+  // Display driver full name
+  document.getElementById("fullName").textContent = driver.firstName + " " + driver.lastName;
+  document.getElementById("organization").textContent = "ESSU Campus Transportation System";
+  document.getElementById("avatar").textContent = driver.firstName[0] + driver.lastName[0];
+
+  // Populate profile grid dynamically
+  const profileGrid = document.getElementById("profileGrid");
+  for (const [key, value] of Object.entries(driver)) {
+    const item = document.createElement("div");
+    item.className = "profile-item";
+    item.innerHTML = `<span>${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</span>
+                      <strong>${value}</strong>`;
+    profileGrid.appendChild(item);
+  }
+
+  // Logout button action
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    window.location.href = "login.html"; // Redirect to login page
+    // Or alert if login page not ready
+    // alert("You have been logged out!");
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  const passwordInput = document.getElementById("password");
+  const confirmPasswordInput = document.getElementById("confirmPassword");
+  const strengthIndicator = document.getElementById("passwordStrength");
+  const togglePasswordBtn = document.getElementById("togglePassword");
+  const toggleConfirmPasswordBtn = document.getElementById("toggleConfirmPassword");
+
+  // Password toggle functionality
+  togglePasswordBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+    togglePasswordBtn.textContent = type === "password" ? "👁️" : "👁️‍🗨️";
+  });
+
+  toggleConfirmPasswordBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const type = confirmPasswordInput.getAttribute("type") === "password" ? "text" : "password";
+    confirmPasswordInput.setAttribute("type", type);
+    toggleConfirmPasswordBtn.textContent = type === "password" ? "👁️" : "👁️‍🗨️";
+  });
+
+  // Password strength checker
+  function checkPasswordStrength(password) {
+    let strength = 0;
+    const feedback = [];
+
+    if (password.length >= 8) strength++;
+    else feedback.push("At least 8 characters");
+
+    if (/[A-Z]/.test(password)) strength++;
+    else feedback.push("Uppercase letter");
+
+    if (/[a-z]/.test(password)) strength++;
+    else feedback.push("Lowercase letter");
+
+    if (/[0-9]/.test(password)) strength++;
+    else feedback.push("Number");
+
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+    else feedback.push("Special character");
+
+    return { strength, feedback };
+  }
+
+  // Update password strength indicator as user types
+  passwordInput.addEventListener("input", function () {
+    const { strength, feedback } = checkPasswordStrength(this.value);
+    
+    if (!this.value) {
+      strengthIndicator.textContent = "Password strength will appear here";
+      strengthIndicator.style.color = "#666";
+      strengthIndicator.style.backgroundColor = "#f5f5f5";
+      return;
+    }
+
+    let strengthText = "";
+    let color = "";
+    let bgColor = "";
+
+    if (strength < 3) {
+      strengthText = "❌ Weak - Add: " + feedback.join(", ");
+      color = "white";
+      bgColor = "#d32f2f";
+    } else if (strength < 4) {
+      strengthText = "⚠️ Fair - Add: " + feedback.join(", ");
+      color = "white";
+      bgColor = "#f57c00";
+    } else if (strength === 4) {
+      strengthText = "✓ Good";
+      color = "white";
+      bgColor = "#388e3c";
+    } else {
+      strengthText = "✓ Strong";
+      color = "white";
+      bgColor = "#1b5e20";
+    }
+
+    strengthIndicator.textContent = strengthText;
+    strengthIndicator.style.color = color;
+    strengthIndicator.style.backgroundColor = bgColor;
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const fullName = form.querySelector('input[placeholder="Full Name"]').value.trim();
+    const email = form.querySelector('input[placeholder="Email"]').value.trim();
+    const password = passwordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
+    const mobile = form.querySelector('input[placeholder="Mobile Number"]').value.trim();
+
+    // Basic validation
+    if (!fullName || !email || !password || !confirmPassword || !mobile) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    // Check password strength
+    const { strength } = checkPasswordStrength(password);
+    if (strength < 3) {
+      alert("Password is too weak. Please use at least 3 of these: uppercase, lowercase, numbers, special characters.");
+      return;
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters.");
+      return;
+    }
+
+    if (!/^[0-9]{10,15}$/.test(mobile)) {
+      alert("Enter a valid mobile number.");
+      return;
+    }
+
+    // Fake DB using localStorage (for demo/school project)
+    const user = {
+      fullName,
+      email,
+      password,
+      mobile
+    };
+
+    localStorage.setItem("charide_user", JSON.stringify(user));
+    localStorage.setItem("charide_logged_in", "true");
+
+    alert("Account created successfully!");
+
+    // Redirect
+    window.location.href = "dashboard.html";
+  });
+});

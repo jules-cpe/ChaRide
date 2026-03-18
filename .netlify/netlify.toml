@@ -1,0 +1,31 @@
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[[plugins]]
+origin = "ui"
+package = "@netlify/angular-runtime"
+
+[plugins.inputs]
+
+[build]
+publish = "C:\\Users\\ERLINDA AMOSCO\\OneDrive\\Desktop\\CHA-RIDE CODE"
+publishOrigin = "default"
+base = "C:\\Users\\ERLINDA AMOSCO\\OneDrive\\Desktop\\CHA-RIDE CODE"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]

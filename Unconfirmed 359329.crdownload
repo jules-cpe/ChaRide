@@ -1,0 +1,61 @@
+// Mock passenger data - replace with actual api calls
+const passengerData = {
+  fullName: "Jonathan Doe",
+  email: "jonathandoe@gmail.com",
+  phone: "+63 917 123 4567",
+  dob: "2005-12-24",
+  homeAddress: "123 Main Street, Maypangdan",
+  city: "Borongan",
+  postalCode: "6800",
+  memberSince: "January 2026",
+  accountStatus: "Active",
+  verificationStatus: "Verified",
+  paymentMethod: "GCash",
+  notifications: "Enabled"
+};
+
+// Load passenger profile on page load
+document.addEventListener('DOMContentLoaded', () => {
+  loadProfileData();
+});
+
+function loadProfileData() {
+  // Set personal information
+  document.getElementById('passengerName').textContent = passengerData.fullName;
+  document.getElementById('passengerEmail').textContent = passengerData.email;
+  document.getElementById('fullName').textContent = passengerData.fullName;
+  document.getElementById('email').textContent = passengerData.email;
+  document.getElementById('phone').textContent = passengerData.phone;
+  document.getElementById('dob').textContent = passengerData.dob;
+
+  // Set address information
+  document.getElementById('homeAddress').textContent = passengerData.homeAddress;
+  document.getElementById('city').textContent = passengerData.city;
+  document.getElementById('postalCode').textContent = passengerData.postalCode;
+
+  // Set account information
+  document.getElementById('memberSince').textContent = passengerData.memberSince;
+  document.getElementById('accountStatus').textContent = passengerData.accountStatus;
+  document.getElementById('verificationStatus').textContent = passengerData.verificationStatus;
+
+  // Set preferences
+  document.getElementById('paymentMethod').textContent = passengerData.paymentMethod;
+  document.getElementById('notifications').textContent = passengerData.notifications;
+}
+
+function editProfile() {
+  alert('Edit Profile feature coming soon!');
+  // TODO: Implement edit profile functionality
+}
+
+function changePassword() {
+  alert('Change Password feature coming soon!');
+  // TODO: Implement change password functionality
+}
+
+function deleteAccount() {
+  if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    alert('Account deletion feature coming soon!');
+    // TODO: Implement account deletion functionality
+  }
+}

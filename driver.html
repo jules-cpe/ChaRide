@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Driver Dashboard</title>
+  <link rel="stylesheet" href="driver.css" />
+</head>
+<body>
+  <div id="loginPage" class="center">
+    <div class="card">
+      <h2>Driver Login</h2>
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <div id="dashboard" class="hidden">
+    <aside>
+      <h2>Driver Panel</h2>
+      <button onclick="showTab('home')">Dashboard</button>
+      <button onclick="showTab('rides')">Rides</button>
+      <button onclick="logout()">Logout</button>
+    </aside>
+
+    <main>
+      <section id="homeTab">
+        <h1>Overview</h1>
+        <div class="stats">
+          <div class="card">
+            <p>Pending Rides</p>
+            <h3 id="pendingCount">0</h3>
+          </div>
+          <div class="card">
+            <p>Completed Rides</p>
+            <h3 id="completedCount">0</h3>
+          </div>
+          <div class="card">
+            <p>Total Earnings</p>
+            <h3>₱<span id="earnings">0</span></h3>
+          </div>
+        </div>
+      </section>
+
+      <section id="ridesTab" class="hidden">
+        <h1>Ride Requests</h1>
+        <label>Payment Method</label>
+        <select id="paymentMethod">
+          <option value="gcash">GCash</option>
+          <option value="card">Card</option>
+          <option value="maya">Maya</option>
+        </select>
+        <div id="rideList"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="driver.js"></script>
+</body>
+</html>

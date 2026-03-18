@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Document Upload</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(to bottom, #006400, #228B22);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .form-container {
+      width: 90%;
+      max-width: 450px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px 25px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      border-top: 8px solid #FFD700; 
+    }
+
+    h1 {
+      text-align: center;
+      color: #FFD700;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #006400;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #000;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 6px;
+      border: 1px solid #ebbe0b;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      background: #FFD700;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #006400;
+      color: #fff;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 12px;
+      color: #006400;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h1>Upload Driver Documents</h1>
+    <div class="subtitle">Please upload the required documents</div>
+
+    <form action="#" method="post" enctype="multipart/form-data">
+      <label>Driver License (Front)</label>
+      <input type="file" name="licenseFront" accept="image/*,.pdf" required>
+
+      <label>Driver License (Back)</label>
+      <input type="file" name="licenseBack" accept="image/*,.pdf" required>
+
+      <label>Vehicle Official Receipt (OR)</label>
+      <input type="file" name="vehicleOR" accept="image/*,.pdf" required>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <footer>
+      © ESSU Transportation System
+    </footer>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+let rides = [
+  { id: 1, passenger: "Juan Dela Cruz", pickup: "Gate 1", dropoff: "Library", fare: 100, status: "Pending" },
+  { id: 2, passenger: "Maria Santos", pickup: "Dormitory", dropoff: "Cafeteria", fare: 120, status: "Pending" }
+];
+
+let completed = 0;
+let earnings = 0;
+
+function login() {
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  renderRides();
+  updateStats();
+}
+
+function logout() {
+  location.reload();
+}
+
+function showTab(tab) {
+  document.getElementById("homeTab").classList.add("hidden");
+  document.getElementById("ridesTab").classList.add("hidden");
+  if (tab === "home") document.getElementById("homeTab").classList.remove("hidden");
+  if (tab === "rides") document.getElementById("ridesTab").classList.remove("hidden");
+}
+
+function updateStats() {
+  document.getElementById("pendingCount").innerText = rides.filter(r => r.status !== "Completed").length;
+  document.getElementById("completedCount").innerText = completed;
+  document.getElementById("earnings").innerText = earnings;
+}
+
+function renderRides() {
+  const rideList = document.getElementById("rideList");
+  rideList.innerHTML = "";
+
+  rides.forEach(ride => {
+    if (ride.status === "Completed") return;
+
+    const div = document.createElement("div");
+    div.className = "ride-card";
+    div.innerHTML = `
+      <h3>${ride.passenger}</h3>
+      <p>${ride.pickup} → ${ride.dropoff}</p>
+      <p>Fare: ₱${ride.fare}</p>
+      <p>Status: ${ride.status}</p>
+      <button onclick="acceptRide(${ride.id})">Accept</button>
+      <button onclick="completeRide(${ride.id})">Complete & Pay</button>
+    `;
+    rideList.appendChild(div);
+  });
+}
+
+function acceptRide(id) {
+  rides = rides.map(r => r.id === id ? { ...r, status: "Ongoing" } : r);
+  renderRides();
+  updateStats();
+}
+
+async function completeRide(id) {
+  const ride = rides.find(r => r.id === id);
+  const paymentMethod = document.getElementById("paymentMethod").value;
+
+  try {
+    const response = await fetch("http://localhost:5000/create-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: ride.fare * 100,
+        description: `Ride payment for ${ride.passenger}`,
+        paymentMethod: paymentMethod
+      })
+    });
+
+    const data = await response.json();
+    if (data.checkout_url) {
+      window.open(data.checkout_url, "_blank");
+    }
+
+    ride.status = "Completed";
+    completed++;
+    earnings += ride.fare;
+
+    renderRides();
+    updateStats();
+  } catch (error) {
+    alert("Payment failed");
+  }
+}

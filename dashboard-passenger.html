@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charide – Passenger Dashboard</title>
+  <link rel="icon" href="logo.png.png" type="image/png" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <img src="logo.png" alt="Charide Logo" class="header-logo">
+      <p class="welcome">Welcome back, <strong id="username">Passenger</strong></p>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" title="Profile" onclick="window.location.href='profile.html'">👤</button>
+      <button class="icon-btn" title="Inbox" onclick="window.location.href='inbox.html'">📬</button>
+      <button class="icon-btn" title="About" onclick="window.location.href='about.html'">ℹ️</button>
+      <button class="icon-btn" title="Help" onclick="window.location.href='help.html'">❓</button>
+      <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+    </div>
+  </header>
+
+  <section class="quick-actions">
+    <div class="card action" onclick="window.location.href='booking.html'">
+      <h3>🚲 Book a Ride</h3>
+      <p>Request a tricycle or motorcycle</p>
+    </div>
+    <div class="card action" onclick="window.location.href='track-driver.html'">
+      <h3>📍 Track Driver</h3>
+      <p>See driver location in real-time</p>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h3>Recent Rides</h3>
+      <ul id="rideHistory"></ul>
+      <button onclick="window.location.href='ride-history.html'">View all rides</button>
+    </div>
+
+    <div class="card">
+      <h3>Wallet Summary</h3>
+      <ul>
+        <li>Total Rides: <strong id="totalRides">0</strong></li>
+        <li>Total Spent: <strong id="totalSpent">₱0</strong></li>
+        <li>Last Payment: <strong id="lastPayment">—</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <script src="dashboard.js"></script>
+
+</body>
+</html>

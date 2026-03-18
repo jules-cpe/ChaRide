@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Charide – Driver Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+/* GENERAL */
+body, html{
+  margin:0; padding:0; font-family:'Inter', sans-serif;
+  height:100%;
+}
+
+.app{
+  display:flex;
+  height:100vh;
+  background:#f4f4f4;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:280px;
+  background:linear-gradient(180deg, #0aa812 0%, #078c0f 100%);
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  padding:0;
+  box-shadow:4px 0 12px rgba(10, 168, 18, 0.2);
+  overflow-y:auto;
+}
+
+.sidebar-header{
+  padding:30px 20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-bottom:2px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:50%;
+  background:white;
+  padding:4px;
+}
+
+.sidebar-title{
+  font-size:24px;
+  font-weight:700;
+  color:#ffffff;
+}
+
+.sidebar-links{
+  flex:1;
+  padding:20px 0;
+  display:flex;
+  flex-direction:column;
+}
+
+.sidebar-links a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:15px 20px;
+  color:rgba(255, 255, 255, 0.9);
+  text-decoration:none;
+  transition:all 0.3s ease;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:500;
+  border-left:4px solid transparent;
+}
+
+.sidebar-links a:hover,
+.sidebar-links a.active{
+  background:rgba(255, 255, 255, 0.1);
+  color:#ffffff;
+  border-left-color:#ffc107;
+}
+
+.sidebar-profile{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:20px;
+  border-bottom:2px solid rgba(255, 255, 255, 0.1);
+}
+
+.avatar{
+  width:50px;
+  height:50px;
+  background:rgba(255, 255, 255, 0.2);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  color:#fff;
+  flex-shrink:0;
+}
+
+.profile-info{
+  display:flex;
+  flex-direction:column;
+}
+
+.profile-info strong{
+  font-size:14px;
+  color:#ffffff;
+  margin:0;
+  font-weight:600;
+}
+
+.profile-info small{
+  font-size:12px;
+  color:rgba(255, 255, 255, 0.8);
+  margin:2px 0 0 0;
+}
+
+/* LOGOUT BUTTON */
+.sidebar-logout{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:15px 20px;
+  color:rgba(255, 255, 255, 0.9);
+  text-decoration:none;
+  transition:all 0.3s ease;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:500;
+  border-left:4px solid transparent;
+  border-top:2px solid rgba(255, 255, 255, 0.1);
+  margin-top:auto;
+}
+
+.sidebar-logout:hover{
+  background:rgba(255, 255, 255, 0.1);
+  color:#ffffff;
+  border-left-color:#ff6b6b;
+}
+
+.sidebar-logout button{
+  display:none;
+}
+
+/* MAIN CONTENT */
+.content{
+  flex:1;
+  padding:25px;
+  overflow-y:auto;
+}
+
+h1{
+  margin-top:0;
+  color:#2e7d32;
+}
+
+.subtitle{
+  color:#4caf50;
+  margin-bottom:25px;
+}
+
+/* STATS CARDS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.card{
+  background:#fff;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+.card-header{
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.badge{
+  background:#43a047;
+  color:#fff;
+  font-size:10px;
+  padding:2px 6px;
+  border-radius:4px;
+}
+
+/* MAIN CARDS */
+.main .card{
+  margin-bottom:20px;
+}
+
+.route-item{
+  margin-bottom:10px;
+}
+
+.route-stats{
+  display:flex;
+  gap:10px;
+  margin:10px 0;
+}
+
+.route-box{
+  flex:1;
+  background:#e8f5e9;
+  padding:10px;
+  border-radius:8px;
+  text-align:center;
+}
+
+#map{
+  height:200px;
+  width:100%;
+  border-radius:8px;
+}
+
+.booking{
+  background:#e8f5e9;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+.booking-header{
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+}
+
+.call-btn{
+  margin-top:5px;
+  padding:6px 12px;
+  border:none;
+  border-radius:5px;
+  background:#43a047;
+  color:white;
+  cursor:pointer;
+}
+
+.call-btn:hover{
+  background:#66bb6a;
+}
+
+#startNavBtn{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:5px;
+  background:#43a047;
+  color:white;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+#startNavBtn:hover{
+  background:#66bb6a;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.png" alt="Charide" class="sidebar-logo">
+      <span class="sidebar-title">Charide</span>
+    </div>
+
+    <nav class="sidebar-links">
+      <a class="active" href="dashboard-driver.html">🏠 Dashboard</a>
+      <a href="message-1.html">💬 Messages</a>
+      <a href="bookings.html">📅 Bookings</a>
+      <a href="support-devices.html">🆘 Support</a>
+      <a href="about-us-1.html">ℹ️ About Us</a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="avatar" id="userAvatar">JD</div>
+      <div class="profile-info">
+        <strong id="userName">John Driver</strong>
+        <small>Driver</small>
+      </div>
+    </div>
+
+    <a href="#" class="sidebar-logout" onclick="logout(); return false;">
+      🚪 Log Out
+    </a>
+  </aside>
+
+  <main class="content">
+    <h1>Driver Dashboard</h1>
+    <p class="subtitle" id="welcomeMsg">Welcome back! Here's your daily overview.</p>
+
+    <div class="stats">
+      <div class="card">
+        <div class="card-header"><span>Today's Earnings</span><span class="badge">Live</span></div>
+        <h2>₱1,250</h2>
+        <p>+15% from yesterday</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span>My Route</span><span class="badge">Live</span></div>
+        <h2 id="distanceStat">0 km</h2>
+        <p>Borongan Center → Tabunan</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span>Today's Bookings</span><span class="badge">Live</span></div>
+        <h2>3</h2>
+        <p>All confirmed</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span>Weekly Average</span><span class="badge">Live</span></div>
+        <h2>₱8,750</h2>
+        <p>+8% from last week</p>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="card">
+        <h3>Current Route</h3>
+        <div class="route-item">
+          <small>Starting Point</small>
+          <strong>Borongan City Center</strong>
+        </div>
+        <div class="route-item">
+          <small>Destination</small>
+          <strong>Barangay Tabunan</strong>
+        </div>
+        <div class="route-stats">
+          <div class="route-box">ETA<br><strong id="eta">--</strong></div>
+          <div class="route-box">Distance<br><strong id="distance">--</strong></div>
+          <div class="route-box">Status<br><strong id="status">Idle</strong></div>
+        </div>
+        <button id="startNavBtn">Start Navigation</button>
+      </div>
+
+      <div class="card">
+        <h3>Live Map</h3>
+        <div id="map"></div>
+      </div>
+
+      <div class="card">
+        <h3>Today's Bookings</h3>
+
+        <div class="booking">
+          <div class="booking-header"><strong>Maria Santos</strong><span class="badge">Confirmed</span></div>
+          <p>Pickup: Brgy. Tabunan</p>
+          <p>Dropoff: ESSU Main</p>
+          <small>2:30 PM</small><br>
+          <button class="call-btn">Call</button>
+        </div>
+
+        <div class="booking">
+          <div class="booking-header"><strong>Juan Dela Cruz</strong><span class="badge">Confirmed</span></div>
+          <p>Pickup: ESSU Main</p>
+          <p>Dropoff: Brgy. Tabunan</p>
+          <small>3:15 PM</small><br>
+          <button class="call-btn">Call</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Initialize Supabase
+const { createClient } = supabase;
+const supabaseUrl = 'https://cvfjpigbkbzjvvfzvjzr.supabase.co';
+const supabaseKey = 'sb_publishable_Wt2fAK6-5mkAX4SNyobCYQ_YPROnFM4';
+const client = createClient(supabaseUrl, supabaseKey);
+
+// Check authentication on page load
+async function checkAuth() {
+  const { data: { user } } = await client.auth.getUser();
+  
+  if (!user) {
+    alert('Please log in first');
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  // Display user information
+  const userEmail = user.email || 'User';
+  const userName = user.user_metadata?.full_name || userEmail.split('@')[0];
+  const userInitials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  
+  document.getElementById('userName').textContent = userName;
+  document.getElementById('userAvatar').textContent = userInitials || 'U';
+  document.getElementById('welcomeMsg').textContent = `Welcome back, ${userName}! Here's your daily overview.`;
+}
+
+// Logout function
+async function logout() {
+  await client.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+// Initialize on page load
+checkAuth();
+
+const destination = [11.6205, 125.4452];
+let driverMarker, routeLine;
+
+const map = L.map("map").setView([11.6084, 125.4317], 13);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors"
+}).addTo(map);
+
+L.marker(destination).addTo(map).bindPopup("Destination");
+
+function distanceCalc(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) ** 2;
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
+document.getElementById("startNavBtn").onclick = () => {
+  document.getElementById("status").textContent = "Navigating";
+
+  navigator.geolocation.watchPosition(
+    pos => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const current = [lat, lng];
+
+      if (!driverMarker) {
+        driverMarker = L.marker(current).addTo(map);
+      } else {
+        driverMarker.setLatLng(current);
+      }
+
+      if (routeLine) routeLine.remove();
+      routeLine = L.polyline([current, destination]).addTo(map);
+
+      const dist = distanceCalc(lat, lng, destination[0], destination[1]);
+      document.getElementById("distance").textContent = dist.toFixed(2) + " km";
+      document.getElementById("distanceStat").textContent = dist.toFixed(2) + " km";
+      document.getElementById("eta").textContent =
+        Math.max(1, Math.round((dist / 40) * 60)) + " mins";
+
+      map.setView(current, 15);
+    },
+    () => alert("Enable GPS"),
+    { enableHighAccuracy: true }
+  );
+};
+
+document.querySelectorAll(".call-btn").forEach(btn => {
+  btn.onclick = () => location.href = "tel:+639000000000";
+});
+</script>
+
+</body>
+</html>
+

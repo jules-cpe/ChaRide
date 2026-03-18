@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Charide – Driver Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+/* GENERAL */
+body, html{
+  margin:0; padding:0; font-family:'Inter', sans-serif;
+  height:100%;
+}
+
+.app{
+  display:flex;
+  height:100vh;
+  background:#f4f4f4;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  background:#2e7d32;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  padding:20px;
+}
+
+.sidebar-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:30px;
+}
+
+.sidebar-logo img{
+  width:40px;
+}
+
+.sidebar-logo span{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.sidebar-links a{
+  display:block;
+  padding:10px 15px;
+  margin:5px 0;
+  color:#c8e6c9;
+  text-decoration:none;
+  border-radius:8px;
+  transition:0.3s;
+}
+
+.sidebar-links a:hover,
+.sidebar-links a.active{
+  background:#43a047;
+  color:#fff;
+}
+
+.sidebar-profile{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:auto;
+  margin-bottom:15px;
+}
+
+.avatar{
+  width:40px;
+  height:40px;
+  background:#81c784;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  color:#fff;
+}
+
+/* LOGOUT BUTTON */
+.sidebar-logout button{
+  width:100%;
+  padding:10px;
+  background-color:#ff4d4f;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.sidebar-logout button:hover{
+  background-color:#ff7875;
+}
+
+/* MAIN CONTENT */
+.content{
+  flex:1;
+  padding:25px;
+  overflow-y:auto;
+}
+
+h1{
+  margin-top:0;
+  color:#2e7d32;
+}
+
+.subtitle{
+  color:#4caf50;
+  margin-bottom:25px;
+}
+
+/* STATS CARDS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.card{
+  background:#fff;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+.card-header{
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.badge{
+  background:#43a047;
+  color:#fff;
+  font-size:10px;
+  padding:2px 6px;
+  border-radius:4px;
+}
+
+/* MAIN CARDS */
+.main .card{
+  margin-bottom:20px;
+}
+
+.route-item{
+  margin-bottom:10px;
+}
+
+.route-stats{
+  display:flex;
+  gap:10px;
+  margin:10px 0;
+}
+
+.route-box{
+  flex:1;
+  background:#e8f5e9;
+  padding:10px;
+  border-radius:8px;
+  text-align:center;
+}
+
+#map{
+  height:200px;
+  width:100%;
+  border-radius:8px;
+}
+
+.booking{
+  background:#e8f5e9;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+.booking-header{
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+}
+
+.call-btn{
+  margin-top:5px;
+  padding:6px 12px;
+  border:none;
+  border-radius:5px;
+  background:#43a047;
+  color:white;
+  cursor:pointer;
+}
+
+.call-btn:hover{
+  background:#66bb6a;
+}
+
+#startNavBtn{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:5px;
+  background:#43a047;
+  color:white;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+#startNavBtn:hover{
+  background:#66bb6a;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo.png" alt="logo">
+      <span>Charide</span>
+    </div>
+
+    <nav class="sidebar-links">
+      <a class="active" href="dashboard-driver.html">Dashboard</a>
+      <a href="message-1.html">Messages</a>
+      <a href="bookings.html">Bookings</a>
+      <a href="support-devices.html">Support</a>
+      <a href="about-us-1.html">About Us</a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="avatar">JD</div>
+      <div>
+        <strong>John Driver</strong>
+        <small>Driver</small>
+      </div>
+    </div>
+
+    <div class="sidebar-logout">
+      <button onclick="logout()">Log Out</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <h1>Driver Dashboard</h1>
+    <p class="subtitle">Welcome back, John! Here's your daily overview.</p>
+
+    <div class="stats">
+      <div class="card">
+        <div class="card-header"><span>Today's Earnings</span><span class="badge">Live</span></div>
+        <h2>₱1,250</h2>
+        <p>+15% from yesterday</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span>My Route</span><span class="badge">Live</span></div>
+        <h2 id="distanceStat">0 km</h2>
+        <p>Borongan Center → Tabunan</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span>Today's Bookings</span><span class="badge">Live</span></div>
+        <h2>3</h2>
+        <p>All confirmed</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span>Weekly Average</span><span class="badge">Live</span></div>
+        <h2>₱8,750</h2>
+        <p>+8% from last week</p>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="card">
+        <h3>Current Route</h3>
+        <div class="route-item">
+          <small>Starting Point</small>
+          <strong>Borongan City Center</strong>
+        </div>
+        <div class="route-item">
+          <small>Destination</small>
+          <strong>Barangay Tabunan</strong>
+        </div>
+        <div class="route-stats">
+          <div class="route-box">ETA<br><strong id="eta">--</strong></div>
+          <div class="route-box">Distance<br><strong id="distance">--</strong></div>
+          <div class="route-box">Status<br><strong id="status">Idle</strong></div>
+        </div>
+        <button id="startNavBtn">Start Navigation</button>
+      </div>
+
+      <div class="card">
+        <h3>Live Map</h3>
+        <div id="map"></div>
+      </div>
+
+      <div class="card">
+        <h3>Today's Bookings</h3>
+
+        <div class="booking">
+          <div class="booking-header"><strong>Maria Santos</strong><span class="badge">Confirmed</span></div>
+          <p>Pickup: Brgy. Tabunan</p>
+          <p>Dropoff: ESSU Main</p>
+          <small>2:30 PM</small><br>
+          <button class="call-btn">Call</button>
+        </div>
+
+        <div class="booking">
+          <div class="booking-header"><strong>Juan Dela Cruz</strong><span class="badge">Confirmed</span></div>
+          <p>Pickup: ESSU Main</p>
+          <p>Dropoff: Brgy. Tabunan</p>
+          <small>3:15 PM</small><br>
+          <button class="call-btn">Call</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const destination = [11.6205, 125.4452];
+let driverMarker, routeLine;
+
+const map = L.map("map").setView([11.6084, 125.4317], 13);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors"
+}).addTo(map);
+
+L.marker(destination).addTo(map).bindPopup("Destination");
+
+function distanceCalc(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) ** 2;
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
+document.getElementById("startNavBtn").onclick = () => {
+  document.getElementById("status").textContent = "Navigating";
+
+  navigator.geolocation.watchPosition(
+    pos => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const current = [lat, lng];
+
+      if (!driverMarker) {
+        driverMarker = L.marker(current).addTo(map);
+      } else {
+        driverMarker.setLatLng(current);
+      }
+
+      if (routeLine) routeLine.remove();
+      routeLine = L.polyline([current, destination]).addTo(map);
+
+      const dist = distanceCalc(lat, lng, destination[0], destination[1]);
+      document.getElementById("distance").textContent = dist.toFixed(2) + " km";
+      document.getElementById("distanceStat").textContent = dist.toFixed(2) + " km";
+      document.getElementById("eta").textContent =
+        Math.max(1, Math.round((dist / 40) * 60)) + " mins";
+
+      map.setView(current, 15);
+    },
+    () => alert("Enable GPS"),
+    { enableHighAccuracy: true }
+  );
+};
+
+document.querySelectorAll(".call-btn").forEach(btn => {
+  btn.onclick = () => location.href = "tel:+639000000000";
+});
+
+function logout() {
+  const supabaseUrl = 'https://cvfjpigbkbzjvvfzvjzr.supabase.co';
+  const supabaseKey = 'sb_publishable_Wt2fAK6-5mkAX4SNyobCYQ_YPROnFM4';
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+  supabase.auth.signOut();
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
+

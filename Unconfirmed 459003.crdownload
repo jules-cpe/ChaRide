@@ -1,0 +1,221 @@
+import express from 'express';
+import cors from 'cors';
+import axios from 'axios';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Load environment variables
+dotenv.config();
+
+// Initialize Express app
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Get __dirname equivalent for ES6 modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// PayMongo API Configuration
+const PAYMONGO_API_URL = 'https://api.paymongo.com/v1';
+const PAYMONGO_SECRET = process.env.PAYMONGO_SECRET;
+
+/**
+ * Helper function to create Basic auth header for PayMongo
+ */
+function getPayMongoAuthHeader() {
+  if (!PAYMONGO_SECRET) {
+    throw new Error('PAYMONGO_SECRET is not defined in environment variables');
+  }
+  // PayMongo uses Basic auth with secret key as username, blank password
+  const encoded = Buffer.from(`${PAYMONGO_SECRET}:`).toString('base64');
+  return `Basic ${encoded}`;
+}
+
+/**
+ * POST /create-payment
+ * Creates a PayMongo checkout session for drivers
+ * 
+ * Request body:
+ * {
+ *   "amount": 100,           // Amount in PHP
+ *   "payment_method": "gcash" // Payment method: gcash, paymaya, or card
+ * }
+ * 
+ * Response:
+ * {
+ *   "checkout_url": "https://checkout.paymongo.com/...",
+ *   "session_id": "cs_..."
+ * }
+ */
+app.post('/create-payment', async (req, res) => {
+  try {
+    const { amount, payment_method } = req.body;
+
+    // Validation
+    if (!amount || amount <= 0) {
+      return res.status(400).json({
+        error: 'Invalid amount. Amount must be greater than 0.'
+      });
+    }
+
+    if (!payment_method) {
+      return res.status(400).json({
+        error: 'Payment method is required.'
+      });
+    }
+
+    const validMethods = ['gcash', 'paymaya', 'card'];
+    if (!validMethods.includes(payment_method.toLowerCase())) {
+      return res.status(400).json({
+        error: `Invalid payment method. Must be one of: ${validMethods.join(', ')}`
+      });
+    }
+
+    // Convert PHP to centavos (multiply by 100)
+    const amountInCentavos = Math.round(amount * 100);
+
+    // Prepare checkout session payload
+    const checkoutPayload = {
+      data: {
+        attributes: {
+          // Amount in the smallest currency unit (centavos for PHP)
+          amount: amountInCentavos,
+          // PHP is the default currency for PayMongo
+          currency: 'PHP',
+          description: `Driver Dashboard Payment - ${payment_method}`,
+          payment_method_types: [payment_method.toLowerCase()],
+          success_url: 'http://localhost:5000/success.html',
+          cancel_url: 'http://localhost:5000/cancel.html',
+          reference_number: `DRV-${Date.now()}`,
+          metadata: {
+            driver_id: 'driver_001',
+            payment_type: 'rider_earnings'
+          }
+        }
+      }
+    };
+
+    // Create checkout session via PayMongo API
+    const response = await axios.post(
+      `${PAYMONGO_API_URL}/checkout_sessions`,
+      checkoutPayload,
+      {
+        headers: {
+          'Authorization': getPayMongoAuthHeader(),
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    // Extract checkout URL and session ID from response
+    const { data } = response.data;
+    const checkoutUrl = data.attributes.checkout_url;
+    const sessionId = data.id;
+
+    res.json({
+      success: true,
+      checkout_url: checkoutUrl,
+      session_id: sessionId,
+      amount: amount,
+      payment_method: payment_method
+    });
+
+  } catch (error) {
+    console.error('Payment creation error:', {
+      status: error.response?.status,
+      message: error.message,
+      data: error.response?.data
+    });
+
+    // Handle PayMongo API errors
+    if (error.response) {
+      const status = error.response.status;
+      const errorData = error.response.data;
+
+      if (status === 401) {
+        return res.status(401).json({
+          error: 'Authentication failed. Check your PAYMONGO_SECRET.'
+        });
+      }
+
+      if (status === 422) {
+        return res.status(422).json({
+          error: 'Invalid payment data. Please check your input.',
+          details: errorData.errors || errorData.message
+        });
+      }
+
+      return res.status(status).json({
+        error: errorData.message || 'PayMongo API error',
+        details: errorData.errors
+      });
+    }
+
+    // Handle other errors
+    res.status(500).json({
+      error: 'Failed to create payment session',
+      message: error.message
+    });
+  }
+});
+
+/**
+ * GET /
+ * Serves the main dashboard HTML
+ */
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'driver-dashboard.html'));
+});
+
+/**
+ * Health check endpoint
+ */
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    server: 'Driver Dashboard API',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Application error:', err);
+  res.status(500).json({
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Not found',
+    path: req.path
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`
+╔════════════════════════════════════════════════════════╗
+║   Driver Dashboard Server - PayMongo Integration      ║
+╚════════════════════════════════════════════════════════╝
+  
+  🚀 Server running at http://localhost:${PORT}
+  📊 Dashboard at http://localhost:${PORT}
+  💓 Health check at http://localhost:${PORT}/health
+
+  Environment:
+  - Node ENV: ${process.env.NODE_ENV || 'development'}
+  - PayMongo initialized: ${PAYMONGO_SECRET ? '✓' : '✗ (Missing PAYMONGO_SECRET)'}
+
+  Ready to accept payments! 💳
+  `);
+});

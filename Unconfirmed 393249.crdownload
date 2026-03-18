@@ -1,0 +1,26 @@
+// Mock passenger data (connect to backend later)
+const passengerData = {
+  name: "User",
+  totalRides: 3,
+  totalSpent: 36,
+  lastPayment: "₱12 – Completed",
+  rides: [
+    { route: "Tabunan → Maypangdan", status: "Completed", cls: "success" },
+    { route: "Maypangdan → ESSU", status: "Completed", cls: "success" },
+    { route: "ESSU → Maypangdan", status: "Completed", cls: "success" }
+  ]
+};
+
+document.getElementById("username").textContent = passengerData.name;
+document.getElementById("totalRides").textContent = passengerData.totalRides;
+document.getElementById("totalSpent").textContent = "₱" + passengerData.totalSpent;
+document.getElementById("lastPayment").textContent = passengerData.lastPayment;
+
+const rideHistory = document.getElementById("rideHistory");
+rideHistory.innerHTML = "";
+
+passengerData.rides.forEach(r => {
+  const li = document.createElement("li");
+  li.innerHTML = `${r.route} <span class="badge ${r.cls}">${r.status}</span>`;
+  rideHistory.appendChild(li);
+});

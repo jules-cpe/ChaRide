@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Account</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+
+      <!-- LOGO -->
+      <div class="logo-container">
+        <img src="logo.png" alt="Charide Logo" class="app-logo">
+      </div>
+
+      <h1>Create Account</h1>
+      <p class="subtitle">Join our ride community</p>
+
+      <form autocomplete="off">
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email" required>
+        <div style="position: relative; display: flex; align-items: center;">
+          <input type="password" id="password" placeholder="Password" autocomplete="new-password" style="width: 100%; padding-right: 40px;" required>
+          <button type="button" class="password-toggle" id="togglePassword" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; font-size: 18px; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">👁️</button>
+        </div>
+        <div id="passwordStrength" style="font-size: 12px; padding: 8px; background-color: #f5f5f5; border-radius: 4px; margin-top: 5px; margin-bottom: 10px; color: #666;">Password strength will appear here</div>
+        <div style="position: relative; display: flex; align-items: center;">
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" style="width: 100%; padding-right: 40px;" required>
+          <button type="button" class="password-toggle" id="toggleConfirmPassword" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; font-size: 18px; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">👁️</button>
+        </div>
+        <input type="tel" placeholder="Mobile Number" required>
+        <button type="submit" class="signup-btn">Sign Up</button>
+      </form>
+
+      <p class="divider">or sign up with</p>
+
+      <div class="social-buttons">
+        <button class="social google">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" alt="Google" class="social-icon">
+          <span>Sign up with Google</span>
+        </button>
+
+        <button class="social facebook">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="social-icon">
+          <span>Sign up with Facebook</span>
+        </button>
+      </div>
+
+      <p class="login-link">Already have an account? <a href="login.html">Log in here</a></p>
+
+    </div>
+  </div>
+
+  <script src="signup.js"></script>
+</body>
+</html>

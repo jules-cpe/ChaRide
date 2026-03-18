@@ -1,0 +1,15 @@
+{
+  "name": "charide-system",
+  "version": "1.0.0",
+  "description": "Charide Management System MVP",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}

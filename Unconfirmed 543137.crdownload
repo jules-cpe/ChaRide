@@ -1,0 +1,22 @@
+// script.js
+
+const imgUpload = document.getElementById('imgUpload');
+const driverImg = document.getElementById('driverImg');
+const uploadBtn = document.getElementById('uploadBtn');
+
+// Open hidden file input when button is clicked
+uploadBtn.addEventListener('click', () => {
+  imgUpload.click();
+});
+
+// Update profile image preview
+imgUpload.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      driverImg.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+});

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help – Charide</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <img src="logo.png" alt="Charide Logo" class="header-logo">
+      <p class="welcome">Help & <strong>Support</strong></p>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" title="Inbox" onclick="window.location.href='inbox.html'">📬</button>
+      <button class="icon-btn" title="About" onclick="window.location.href='about.html'">ℹ️</button>
+      <button class="icon-btn" title="Help" onclick="window.location.href='help.html'">❓</button>
+      <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+    </div>
+  </header>
+
+  <section class="grid">
+    <div class="card">
+      <h3>Frequently Asked Questions</h3>
+      
+      <h4 style="color: var(--accent); margin-top: 16px; margin-bottom: 8px;">How do I book a ride?</h4>
+      <p style="margin-bottom: 16px;">Click on "Book a Ride" from your dashboard, enter your pickup and destination locations, select your vehicle type, and confirm the booking.</p>
+      
+      <h4 style="color: var(--accent); margin-top: 16px; margin-bottom: 8px;">How can I track my driver?</h4>
+      <p style="margin-bottom: 16px;">Once your ride is confirmed, go to "Track Driver" to see your driver's real-time location and estimated arrival time.</p>
+      
+      <h4 style="color: var(--accent); margin-top: 16px; margin-bottom: 8px;">What payment methods do you accept?</h4>
+      <p style="margin-bottom: 16px;">We accept credit cards, debit cards, digital wallets, and cash payments. You can manage your payment method in your account settings.</p>
+      
+      <h4 style="color: var(--accent); margin-top: 16px; margin-bottom: 8px;">How do I report a safety issue?</h4>
+      <p style="margin-bottom: 16px;">If you experience any safety concerns, please contact our support team immediately at support@charide.com or call 1-800-CHARIDE.</p>
+    </div>
+
+    <div class="card">
+      <h3>Get Support</h3>
+      <p style="margin-bottom: 20px;">Having trouble? Our support team is here to help!</p>
+      
+      <div style="background: rgba(251, 191, 36, 0.1); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+        <h4 style="color: var(--accent); margin-bottom: 8px;">📧 Email Support</h4>
+        <p>support@charide.com</p>
+      </div>
+
+      <div style="background: rgba(251, 191, 36, 0.1); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+        <h4 style="color: var(--accent); margin-bottom: 8px;">📞 Phone Support</h4>
+        <p>1-800-CHARIDE (1-800-242-7433)</p>
+      </div>
+
+      <div style="background: rgba(251, 191, 36, 0.1); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+        <h4 style="color: var(--accent); margin-bottom: 8px;">💬 Live Chat</h4>
+        <p>Available 24/7 through our mobile app</p>
+      </div>
+
+      <a href="dashboard.html" style="display: inline-block; padding: 10px 20px; background: var(--accent); color: #000; text-decoration: none; border-radius: 8px; font-weight: 700;">Back to Dashboard</a>
+    </div>
+  </section>
+
+  <script src="dashboard.js"></script>
+
+</body>
+</html>

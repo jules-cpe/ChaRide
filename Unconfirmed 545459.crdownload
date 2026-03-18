@@ -1,0 +1,38 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const SUPABASE_URL = window.SUPABASE_URL || 'https://egpqxgujhjdxqorpiumr.supabase.co';
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_mVoRiA--sUoK-DdNB-Q8iA_wiFiGRKl';
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+export async function signIn(email, password) {
+  const { user, error } = await supabase.auth.signIn({ email, password });
+  if (error) throw error;
+  return user;
+}
+
+export async function getRecentRides(limit = 10) {
+  try {
+    const user = supabase.auth.user();
+    if (!user) return [];
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('id, start, "end", created_at, price')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    if (error) { console.error('getRecentRides', error); return []; }
+    return data || [];
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+export async function getWalletSummary() {
+  const rides = await getRecentRides(1000);
+  const totalRides = rides.length;
+  const totalSpent = rides.reduce((s, r) => s + (r.price || 0), 0);
+  const lastPayment = rides[0] ? new Date(rides[0].created_at).toLocaleString() : null;
+  return { totalRides, totalSpent, lastPayment };
+}

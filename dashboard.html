@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charide – Passenger Dashboard</title>
+  <link rel="icon" href="logo.png.png" type="image/png" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <img src="logo.png.png" alt="Charide Logo">
+        <span>Charide</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="inbox.html" class="nav-item">📬 Inbox</a>
+        <a href="about.html" class="nav-item">ℹ️ About</a>
+        <a href="help.html" class="nav-item">❓ Help</a>
+      </nav>
+    </div>
+
+    <div class="sidebar-bottom">
+      <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <header>
+      <div class="header-left">
+        <img src="logo.png.png" alt="Charide" class="header-logo">
+        <p class="welcome">Welcome back, <strong id="username">Passenger</strong></p>
+      </div>
+    </header>
+
+    <section class="quick-actions">
+      <div class="card action" onclick="window.location.href='booking.html'">
+        <h3>🚲 Book a Ride</h3>
+        <p>Request a tricycle or motorcycle</p>
+      </div>
+
+      <div class="card action" onclick="window.location.href='track-driver.html'">
+        <h3>📍 Track Driver</h3>
+        <p>See driver location in real-time</p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h3>Recent Rides</h3>
+        <ul id="rideHistory"></ul>
+
+        <!-- Fixed button -->
+        <button class="view-rides-btn" onclick="window.location.href='ride-history.html'">
+          View all rides
+        </button>
+      </div>
+
+      <div class="card">
+        <h3>Wallet Summary</h3>
+        <ul>
+          <li>Total Rides: <strong id="totalRides">0</strong></li>
+          <li>Total Spent: <strong id="totalSpent">₱0</strong></li>
+          <li>Last Payment: <strong id="lastPayment">—</strong></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+
+</body>
+</html>

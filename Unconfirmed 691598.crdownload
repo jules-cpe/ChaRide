@@ -1,0 +1,103 @@
+// Mock nearby drivers data
+const nearbyDrivers = [
+  {
+    id: 1,
+    name: "Juan Dela Cruz",
+    avatar: "https://via.placeholder.com/60",
+    vehicleType: "Tricycle",
+    vehicle: "Tricycle – ABC 1234",
+    distance: "0.5 km",
+    rating: "4.8",
+    reviews: 125,
+    eta: "3 min",
+    phone: "+63 917 111 1111"
+  },
+  {
+    id: 2,
+    name: "Maria Santos",
+    avatar: "https://via.placeholder.com/60",
+    vehicleType: "Motorcycle",
+    vehicle: "Motorcycle – XYZ 5678",
+    distance: "0.8 km",
+    rating: "4.9",
+    reviews: 98,
+    eta: "5 min",
+    phone: "+63 917 222 2222"
+  },
+  {
+    id: 3,
+    name: "Pedro Reyes",
+    avatar: "https://via.placeholder.com/60",
+    vehicleType: "Tricycle",
+    vehicle: "Tricycle – DEF 9012",
+    distance: "1.2 km",
+    rating: "4.7",
+    reviews: 156,
+    eta: "7 min",
+    phone: "+63 917 333 3333"
+  },
+  {
+    id: 4,
+    name: "Rosa Garcia",
+    avatar: "https://via.placeholder.com/60",
+    vehicleType: "Motorcycle",
+    vehicle: "Motorcycle – QWE 3456",
+    distance: "1.5 km",
+    rating: "4.6",
+    reviews: 87,
+    eta: "9 min",
+    phone: "+63 917 444 4444"
+  }
+];
+
+// Display drivers in the list
+function displayDrivers() {
+  const driversList = document.getElementById('driversList');
+  driversList.innerHTML = '';
+
+  nearbyDrivers.forEach(driver => {
+    const driverCard = document.createElement('div');
+    driverCard.className = 'driver-card';
+    driverCard.innerHTML = `
+      <div class="driver-header">
+        <img src="${driver.avatar}" alt="${driver.name}" class="driver-avatar">
+        <div class="driver-name-info">
+          <p class="driver-name">${driver.name}</p>
+          <p class="vehicle-type">${driver.vehicle}</p>
+        </div>
+        <div class="driver-rating">
+          ⭐ ${driver.rating} (${driver.reviews})
+        </div>
+      </div>
+      
+      <div class="driver-details">
+        <div class="detail-item">
+          <span class="detail-label">Distance</span>
+          <span class="detail-value">${driver.distance}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">ETA</span>
+          <span class="detail-value">${driver.eta}</span>
+        </div>
+      </div>
+      
+      <div class="driver-actions">
+        <button class="book-btn" onclick="bookDriver(${driver.id})">Book Now</button>
+        <button class="call-btn" onclick="callDriver('${driver.phone}')">📞 Call</button>
+      </div>
+    `;
+    driversList.appendChild(driverCard);
+  });
+}
+
+function bookDriver(driverId) {
+  const driver = nearbyDrivers.find(d => d.id === driverId);
+  alert(`Booking confirmed with ${driver.name}!\n\nVehicle: ${driver.vehicle}\nETA: ${driver.eta}`);
+}
+
+function callDriver(phone) {
+  alert(`Calling driver at ${phone}`);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', displayDrivers);

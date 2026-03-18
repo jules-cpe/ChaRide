@@ -1,0 +1,70 @@
+@echo off
+REM Driver Dashboard - Quick Setup Script for Windows
+REM This script sets up and starts the Driver Dashboard server
+
+echo.
+echo ╔════════════════════════════════════════════════════════╗
+echo ║   Driver Dashboard - PayMongo Integration             ║
+echo ║            Quick Setup Script                         ║
+echo ╚════════════════════════════════════════════════════════╝
+echo.
+
+REM Check if Node.js is installed
+node --version >nul 2>&1
+if errorlevel 1 (
+    echo ❌ Node.js is not installed or not in PATH
+    echo Please download from: https://nodejs.org/
+    pause
+    exit /b 1
+)
+
+echo ✓ Node.js found: 
+node --version
+
+REM Check if npm is installed
+npm --version >nul 2>&1
+if errorlevel 1 (
+    echo ❌ npm is not found
+    pause
+    exit /b 1
+)
+
+echo ✓ npm found: 
+npm --version
+echo.
+
+REM Check if .env exists
+if not exist .env (
+    echo ⚠️  .env file not found. Creating template...
+    (
+        echo # Server Configuration
+        echo PORT=5000
+        echo NODE_ENV=development
+        echo.
+        echo # PayMongo Configuration
+        echo PAYMONGO_SECRET=sk_test_YOUR_PAYMONGO_SECRET_KEY_HERE
+    ) > .env
+    echo ✓ Created .env file
+    echo.
+    echo ⚠️  Please update .env with your PayMongo secret key:
+    echo   https://dashboard.paymongo.com/developers
+    echo.
+)
+
+REM Install dependencies
+echo Installing dependencies...
+call npm install
+if errorlevel 1 (
+    echo ❌ Failed to install dependencies
+    pause
+    exit /b 1
+)
+
+echo.
+echo ✓ Setup complete!
+echo.
+echo Starting server...
+echo.
+
+REM Start the server
+call npm start

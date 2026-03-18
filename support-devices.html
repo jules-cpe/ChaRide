@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Help & Support</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0aa812;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #0aa812;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 20px auto;
+    }
+
+    /* Shared container style */
+    .container {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      color: #0aa812;
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      border: 2px solid #0aa812;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    input {
+      height: 45px;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #08810f;
+      box-shadow: 0 0 6px rgba(10,168,18,0.4);
+    }
+
+    button {
+      background-color: #0aa812;
+      color: yellow;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #08810f;
+    }
+
+    /* FAQ box styling */
+    .faq-box {
+      background-color: #f9fff9;
+      border-left: 6px solid #0aa812;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .faq-box li {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .faq-box li:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Help & Support for Drivers</h1>
+</header>
+
+<main>
+
+  <!-- Complaint / Feedback Container -->
+  <div class="container">
+    <h2>Complaint / Feedback</h2>
+    <p>If you encounter any issues, please fill out the form below and we will respond promptly:</p>
+
+    <form>
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+
+      <label for="complaint">Complaint / Feedback</label>
+      <textarea id="complaint" placeholder="Describe your issue or suggestion" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- FAQs Container (separate box, same page) -->
+  <div class="container">
+    <h2>FAQs</h2>
+
+    <div class="faq-box">
+      <ul>
+        <li>How do I report a road issue or accident?</li>
+        <li>Why is the app not receiving booking requests?</li>
+        <li>How do I update my driver profile or contact info?</li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

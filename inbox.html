@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inbox – Charide</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <style>
+    .inbox-container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+      height: calc(100vh - 200px);
+    }
+
+    .conversations-list {
+      background: rgba(20, 83, 45, 0.85);
+      border-radius: 14px;
+      border: 1px solid rgba(251,191,36,0.1);
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .conversation-item {
+      padding: 12px;
+      margin-bottom: 8px;
+      background: rgba(251, 191, 36, 0.05);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .conversation-item:hover {
+      background: rgba(251, 191, 36, 0.1);
+      border-color: rgba(251, 191, 36, 0.4);
+      transform: translateX(4px);
+    }
+
+    .conversation-item.active {
+      background: rgba(251, 191, 36, 0.15);
+      border-color: var(--accent);
+    }
+
+    .conversation-driver {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .conversation-preview {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .conversation-time {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .chat-window {
+      background: rgba(20, 83, 45, 0.85);
+      border-radius: 14px;
+      border: 1px solid rgba(251,191,36,0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: 16px;
+      border-bottom: 1px solid rgba(251,191,36,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .driver-info {
+      flex: 1;
+    }
+
+    .driver-name {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .driver-details {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .driver-avatar {
+      width: 50px;
+      height: 50px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .message.sent {
+      justify-content: flex-end;
+    }
+
+    .message.received {
+      justify-content: flex-start;
+    }
+
+    .message-bubble {
+      max-width: 60%;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .message.received .message-bubble {
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      color: var(--text);
+    }
+
+    .message.sent .message-bubble {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .message-time {
+      font-size: 11px;
+      color: var(--muted);
+      padding: 0 8px;
+    }
+
+    .message-input-container {
+      padding: 16px;
+      border-top: 1px solid rgba(251,191,36,0.1);
+      display: flex;
+      gap: 8px;
+    }
+
+    .message-input {
+      flex: 1;
+      padding: 10px 14px;
+      background: rgba(251, 191, 36, 0.05);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .message-input::placeholder {
+      color: var(--muted);
+    }
+
+    .message-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(251, 191, 36, 0.1);
+    }
+
+    .send-btn {
+      padding: 10px 16px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .send-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(251,191,36,0.3);
+    }
+
+    .empty-chat {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .conversations-header {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <img src="logo.png" alt="Charide Logo" class="header-logo">
+      <p class="welcome">Messages & <strong>Communication</strong></p>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" title="Inbox" onclick="window.location.href='inbox.html'">📬</button>
+      <button class="icon-btn" title="About" onclick="window.location.href='about.html'">ℹ️</button>
+      <button class="icon-btn" title="Help" onclick="window.location.href='help.html'">❓</button>
+      <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+    </div>
+  </header>
+
+  <section style="padding: 24px;">
+    <div class="inbox-container">
+      <!-- Conversations List -->
+      <div class="conversations-list">
+        <div class="conversations-header">Active Conversations</div>
+        
+        <div class="conversation-item active" onclick="selectConversation(1)">
+          <div class="conversation-driver">🏍️ Juan Cruz</div>
+          <div class="conversation-preview">Thanks, arriving in 5 mins...</div>
+          <div class="conversation-time">2 min ago</div>
+        </div>
+
+        <div class="conversation-item" onclick="selectConversation(2)">
+          <div class="conversation-driver">🛵 Maria Santos</div>
+          <div class="conversation-preview">Have a safe trip!</div>
+          <div class="conversation-time">1 hour ago</div>
+        </div>
+
+        <div class="conversation-item" onclick="selectConversation(3)">
+          <div class="conversation-driver">🛺 Carlos Reyes</div>
+          <div class="conversation-preview">See you at the corner...</div>
+          <div class="conversation-time">Yesterday</div>
+        </div>
+
+        <div class="conversation-item" onclick="selectConversation(4)">
+          <div class="conversation-driver">🛺 Ana Gonzales</div>
+          <div class="conversation-preview">Thank you for the ride!</div>
+          <div class="conversation-time">2 days ago</div>
+        </div>
+      </div>
+
+      <!-- Chat Window -->
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="driver-avatar">🏍️</div>
+          <div class="driver-info">
+            <div class="driver-name">Juan Cruz</div>
+            <div class="driver-details">⭐ 4.8 • HONDA XRM 125 MOTARD • Currently Active</div>
+          </div>
+        </div>
+
+        <div class="messages">
+          <div class="message received">
+            <div class="message-bubble"> Hi! I'm on my way to your location</div>
+            <div class="message-time">2:15 PM</div>
+          </div>
+
+          <div class="message sent">
+            <div class="message-time">2:16 PM</div>
+            <div class="message-bubble">Great! I'm near the corner</div>
+          </div>
+
+          <div class="message received">
+            <div class="message-bubble">I can see you now!</div>
+            <div class="message-time">2:17 PM</div>
+          </div>
+
+          <div class="message received">
+            <div class="message-bubble">Thanks, arriving in 5 mins...</div>
+            <div class="message-time">2:19 PM</div>
+          </div>
+        </div>
+
+        <div class="message-input-container">
+          <input type="text" class="message-input" placeholder="Type your message...">
+          <button class="send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 0 24px;">
+    <a href="dashboard.html" style="display: inline-block; padding: 10px 20px; background: var(--accent); color: #000; text-decoration: none; border-radius: 8px; font-weight: 700; margin-top: 16px;">Back to Dashboard</a>
+  </section>
+
+  <script src="dashboard.js"></script>
+  <script>
+    function selectConversation(id) {
+      // Remove active class from all items
+      document.querySelectorAll('.conversation-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      // Add active class to clicked item
+      event.target.closest('.conversation-item').classList.add('active');
+    }
+
+    // Make send button functional
+    document.querySelector('.send-btn').addEventListener('click', function() {
+      const input = document.querySelector('.message-input');
+      if (input.value.trim()) {
+        // Create new message element
+        const messagesDiv = document.querySelector('.messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message sent';
+        messageDiv.innerHTML = `
+          <div class="message-time">just now</div>
+          <div class="message-bubble">${input.value}</div>
+        `;
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        input.value = '';
+      }
+    });
+
+    // Allow Enter key to send message
+    document.querySelector('.message-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        document.querySelector('.send-btn').click();
+      }
+    });
+  </script>
+
+</body>
+</html>
+

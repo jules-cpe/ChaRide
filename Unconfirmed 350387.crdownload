@@ -1,0 +1,17 @@
+const email = document.getElementById("loginEmail");
+const password = document.getElementById("loginPassword");
+const loginBtn = document.getElementById("loginBtn");
+
+function validateLogin() {
+  loginBtn.disabled = !(email.value.trim() && password.value.trim());
+}
+
+email.addEventListener("input", validateLogin);
+password.addEventListener("input", validateLogin);
+
+loginBtn.addEventListener("click", () => {
+  if (!email.value || !password.value) return;
+
+  // TODO: real authentication later
+  window.location.href = "dashboard.html";
+});
