@@ -34,12 +34,17 @@ body, html{
 .sidebar-logo{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
   margin-bottom:30px;
 }
 
+/* FIXED LOGO SIZE HERE */
 .sidebar-logo img{
-  width:40px;
+  width: 80px;   /* Adjusted size */
+  height: 80px;  /* Adjusted size */
+  object-fit: contain;
+  border-radius: 200%;
+  padding: 1px;
 }
 
 .sidebar-logo span{
@@ -224,8 +229,8 @@ h1{
 
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <img src="logo.png" alt="logo">
-      <span>Charide</span>
+      <img src="preview.png" alt="ESAKAY Logo">
+      <span>ESAKAY</span>
     </div>
 
     <nav class="sidebar-links">
@@ -394,4 +399,3 @@ function logout() {
 
 </body>
 </html>
-

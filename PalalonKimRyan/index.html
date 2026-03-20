@@ -3,94 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Angkas</title>
-    <link rel="stylesheet" href="index.css">
+    <title>ESAKAY – ESSU Official Campus Ride-Hailing</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        :root {
+            --primary-green: #1b5e20;
+            --accent-green: #2e7d32;
+            --light-green: #f1f8e9;
+            --white: #ffffff;
+            --dark: #1a1a1a;
+            --gray: #666666;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: var(--dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
+
+        /* --- MODERN HEADER --- */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 12px 5%; 
+            display: flex;
+            justify-content: flex-start; 
+            align-items: center;
+            background: rgba(27, 94, 32, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            box-sizing: border-box;
+            gap: 60px;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-wrapper img {
+            width: 80px; 
+            height: 80px;
+            object-fit: contain;
+            border-radius: 50%;
+            padding: 2px;
+        }
+
+        .brand-name {
+            color: var(--white);
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .navbar {
+            display: flex;
+            gap: 30px;
+        }
+
+        .navbar a {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar a:hover, .navbar a.active {
+            color: #ffc107;
+        }
+
+        /* --- ENHANCED HERO --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        .hero-content { max-width: 700px; }
+        .hero-content h1 { 
+            font-size: 64px; 
+            font-weight: 800; 
+            margin-bottom: 20px; 
+            line-height: 1.1;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+        .hero-content p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: #e0e0e0;
+        }
+
+        .btn-group { display: flex; gap: 20px; }
+        .btn { 
+            padding: 16px 40px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: 700; 
+            transition: 0.4s;
+            text-align: center;
+        }
+        .btn-primary { background: #ffc107; color: #1a1a1a; }
+        .btn-primary:hover { background: #ffca28; transform: translateY(-3px); }
+        .btn-outline { border: 2px solid white; color: white; }
+        .btn-outline:hover { background: white; color: var(--primary-green); }
+
+        /* --- PROFESSIONAL SECTIONS --- */
+        section { padding: 120px 10%; }
+        
+        .section-tag {
+            display: block;
+            text-align: center;
+            color: var(--accent-green);
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .section-title { 
+            text-align: center; 
+            font-size: 42px; 
+            color: var(--primary-green); 
+            margin-bottom: 60px; 
+            font-weight: 800;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card { 
+            background: #ffffff; 
+            padding: 40px; 
+            border-radius: 24px; 
+            border: 1px solid #eee;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            text-align: left;
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent-green); }
+        .card h3 { color: var(--primary-green); font-size: 24px; margin-bottom: 15px; }
+        .card p { color: var(--gray); font-size: 16px; }
+
+        .about-flex {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            background: var(--light-green);
+            padding: 60px;
+            border-radius: 30px;
+        }
+
+        /* --- FOOTER / CONTACT --- */
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .contact-item { text-align: center; }
+        .contact-item i { font-size: 24px; color: var(--accent-green); display: block; margin-bottom: 10px; }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 18px 45px;
+            background: #ffc107;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 193, 7, 0.4);
+            z-index: 1000;
+            transition: 0.3s;
+        }
+        .fab:hover { transform: scale(1.05); background: #ffca28; }
+
+        @media (max-width: 768px) {
+            .navbar { display: none; }
+            .header { justify-content: space-between; gap: 0; }
+            .hero-content h1 { font-size: 42px; }
+            .about-flex { flex-direction: column; text-align: center; }
+        }
+    </style>
 </head>
 <body>
-   <header class="header">
-        <a href="" class="logo animate__animated animate__slideInLeft">Charide</a>
 
-        <nav class="navbar animate__animated animate__slideInRight animate__delay-1s">
-            <a href="" class="active">Home</a>
-            <a href="#about">About</a>
+    <header class="header">
+        <a href="#" class="logo-wrapper animate__animated animate__fadeInLeft">
+            <img src="preview.png" alt="ESAKAY Logo">
+            <span class="brand-name"></span>
+        </a>
+
+        <nav class="navbar animate__animated animate__fadeInRight">
+            <a href="#" class="active">Home</a>
+            <a href="#about">Our Mission</a>
             <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
+            <a href="#contact">Support</a>
         </nav>
-   </header>
-   
-   <section class="home">
-        <div class="home-content">
-            <h1 class="animate__animated animate__slideInLeft">
-                Safe, Fast & Reliable <br> Motorcycle Rides
-            </h1>
-            <h3 class="animate__animated animate__slideInLeft animate__delay-1s">
-                Your Everyday Ride Partner
-            </h3>
-            <p class="animate__animated animate__slideInLeft animate__delay-2s">
-                Charide is a motorcycle ride-hailing service designed to get you 
-                to your destination quickly and safely. 
-                Avoid traffic, save time, and enjoy affordable rides with trained riders.
-                Book anytime, anywhere!
-            </p>
-           <div class="btn-box animate__animated animate__slideInLeft animate__delay-3s">
-    <a href="signup (1).html" btn-primary">Sign Up</a>
-    <a href="login.html" class="btn-outline">Log In</a>
-</div>
+    </header>
 
-            <div class="pic">
-                <div class="img1"><img src="angkas1.jpg" alt="Angkas Ride"></div>
-                <div class="img2"><img src="angkas2.jpg" alt="Motorcycle Taxi"></div>
-                <div class="pico">
-                    <div class="img3"><img src="angkas3.jpg" alt="Angkas App"></div>
-                </div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="animate__animated animate__fadeInUp">
+                Reliable Campus <br> Mobility.
+            </h1>
+            <p class="animate__animated animate__fadeInUp animate__delay-1s">
+                Ang <strong>ESAKAY</strong> ay ang official ride-hailing app na dinisenyo para sa komunidad ng Eastern Samar State University. Ligtas, mabilis, at abot-kaya para sa bawat estudyante.
+            </p>
+            <div class="btn-group animate__animated animate__fadeInUp animate__delay-2s">
+                <a href="signup.html" class="btn btn-primary">Download App</a>
+                <a href="login.html" class="btn btn-outline">Be a Rider</a>
             </div>
         </div>
     </section>
 
-    <section class="about" id="about">
-        <h2 class="heading">About <span>CHARIDE</span></h2>
-        <div class="pica">
-            <img src="angkas3.jpg" alt="About Angkas">
-            <span class="circle-spin"></span>
-        </div>
-        <div class="about-content">
-            <p>
-                Cha Ride is a campus-based transportation service created to provide students, faculty, and staff of ESSU with a safe and convenient way to travel within the campus.
-                Our riders undergo proper training and follow strict safety standards.
-                We aim to make daily commuting easier, faster, and more affordable for everyone.
-            </p>
-        </div>
-        
-    </section>
-
-    <section class="about" id="services">
-        <h2 class="heading">Our <span>Services</span></h2>
-        <div class="about-content">
-            <p>
-            🚕 Campus Motorcycle & Tricycle Rides<br>
-            🎒 Student-Friendly Pick-up & Drop-off<br>
-            🕒 On-Demand and Scheduled Trips<br>
-            💰 Affordable and Transparent Fare System<br>
-            📱 Fast and Easy Booking via Web Application
-            </p>
+    <section id="about">
+        <span class="section-tag">About Our Platform</span>
+        <h2 class="section-title">Driven by the Community</h2>
+        <div class="about-flex">
+            <div style="flex: 1;">
+                <h3 style="color: var(--primary-green); font-size: 28px;">Connecting ESSU, One Ride at a Time.</h3>
+                <p style="font-size: 18px; color: #444;">
+                    Ang <strong>ESAKAY</strong> ay hindi lamang isang transport tool, ito ay isang solusyon na binuo para sa mga mag-aaral at kawani ng Eastern Samar State University. Layunin naming puksain ang hirap sa pag-commute sa loob ng malawak na campus sa pamamagitan ng pag-uugnay sa iyo sa aming network ng mga <strong>verified student-riders</strong> at local partners.
+                </p>
+                <p style="font-size: 18px; color: #444;">
+                    Sa bawat sakay, sinisiguro naming ikaw ay nasa mabuting kamay habang sinusuportahan ang kabuhayan ng iyong mga kapwa estudyante.
+                </p>
+            </div>
         </div>
     </section>
 
-    <section class="about" id="contact">
-        <h2 class="heading">Contact <span>Us</span></h2>
-        <div class="about-content">
-            <p>
-                📍 ESSU BORONGAN<br>
-                📞 +63 9854656969<br>
-                📧 support@ChaRide.ph<br>
-                Ride safe with ChaRide 🏍️
-            </p>
+    <section id="services" style="background: #fafafa;">
+        <span class="section-tag">Why Choose Us</span>
+        <h2 class="section-title">Our Premium Services</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>🏍️ Instant Booking</h3>
+                <p>Huwag nang mag-antay sa ilalim ng init ng araw. Gamit ang aming real-time system, makakakuha ka ng rider sa loob lamang ng ilang minuto kahit saan ka man sa campus vicinity.</p>
+            </div>
+            <div class="card">
+                <h3>🛡️ Safety First</h3>
+                <p>Ang iyong seguridad ang aming prayoridad. Ang lahat ng aming riders ay sumasailalim sa masusing background check at validation ng ESSU administration bago payagang bumiyahe.</p>
+            </div>
+            <div class="card">
+                <h3>💰 Student-Friendly Rates</h3>
+                <p>Dahil alam namin ang budget ng estudyante, ang aming pamasahe ay fix at transparent. Walang "surge pricing," saktong-sakto lang sa iyong allowance para sa araw-araw.</p>
+            </div>
+            <div class="card" style="border-bottom: 4px solid var(--accent-green);">
+                <h3>📊 Real-Time Tracking</h3>
+                <p>I-track ang lokasyon ng iyong rider para malaman mo kung kailan ka dapat lumabas ng classroom o gate. Safe at convenient para sa lahat.</p>
+            </div>
         </div>
     </section>
 
-    <button onclick="orderNow()">Book Now</button>
-    <script src="script.js"></script>
+    <section id="contact">
+        <span class="section-tag">Contact Us</span>
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="card" style="max-width: 900px; margin: 0 auto; border-top: 6px solid var(--primary-green);">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>📍 Location</strong>
+                    <p>ESSU Borongan Main Campus,<br>City of Borongan, Eastern Samar</p>
+                </div>
+                <div class="contact-item">
+                    <strong>📞 Phone</strong>
+                    <p>+63 985 465 6969</p>
+                </div>
+                <div class="contact-item">
+                    <strong>📧 Email Support</strong>
+                    <p>support@esakay.ph</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+                <p style="font-weight: 700; color: var(--primary-green);">#RideSmartWithESAKAY</p>
+                <p style="font-size: 12px; color: #999;">© 2026 ESAKAY Platform. All Rights Reserved.</p>
+            </div>
+        </div>
+    </section>
+
+    <button class="fab" onclick="location.href='login.html'">BOOK A RIDE NOW</button>
+
 </body>
 </html>
